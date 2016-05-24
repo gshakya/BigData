@@ -6,7 +6,7 @@ import java.util.List;
 import W1D1.MapperOperator;
 import W1D1.Pair;
 
-public class MergerClass {
+public class Reducer {
 	private List<Pair<String, List<Integer>>> mergedList = new ArrayList<>();
 
 	
