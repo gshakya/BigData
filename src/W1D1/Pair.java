@@ -2,9 +2,14 @@ package W1D1;
 
 public class Pair<k extends Comparable<k>, v> implements Comparable<Pair<k, v>> {
 
-	private final k key;
-	private final v value;
+	private k key;
+	private v value;
 
+	
+	public Pair(){
+		
+	}
+	
 	public Pair(k key, v value) {
 		this.key = key;
 		this.value = value;
@@ -16,6 +21,16 @@ public class Pair<k extends Comparable<k>, v> implements Comparable<Pair<k, v>> 
 
 	public v getValue() {
 		return value;
+	}
+	
+	
+
+	public void setKey(k key) {
+		this.key = key;
+	}
+
+	public void setValue(v value) {
+		this.value = value;
 	}
 
 	@Override
