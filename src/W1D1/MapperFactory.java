@@ -9,18 +9,28 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class MapperOperator {
+public class MapperFactory {
 
-	public static void main(String[] args) {
-		List<Pair<String, Integer>> mappedValue = collector("testDataForW1D1.txt");
-		
-		printPairs(mappedValue);
-		printSortedPairs(mappedValue);
+	private String fileLocation;
+	private List<Pair<String, Integer>> mappedList = new ArrayList<>();
+
+	public MapperFactory(String fileLocation) {
+		this.fileLocation = fileLocation;
+
 	}
 
-	public static List<Pair<String, Integer>> collector(String fileLocation) {
+	public static void main(String[] args) {
+
+		MapperFactory m = new MapperFactory("testDataForW1D1.txt");
+		List<Pair<String, Integer>> mappedValue = m.map();
+
+		m.printPairs();
+		m.printSortedPairs();
+	}
+
+	public List<Pair<String, Integer>> map() {
 		try {
-			List<Pair<String, Integer>> storeWordList = new ArrayList<>();
+
 			FileInputStream fstream = new FileInputStream(fileLocation);
 			// Get the object of DataInputStream
 			DataInputStream in = new DataInputStream(fstream);
@@ -41,14 +51,14 @@ public class MapperOperator {
 					if (m.find()) {
 						// System.out.println(m.group(0).replace('"',
 						// '\0').trim());
-						storeWordList.add(new Pair<String, Integer>(m.group(0)
+						mappedList.add(new Pair<String, Integer>(m.group(0)
 								.replace('"', '\0').trim().toLowerCase(), 1));
 					}
 				}
 
 			}
 			br.close();
-			return storeWordList;
+			return mappedList;
 		}
 
 		catch (Exception e) {// Catch exception if any
@@ -57,24 +67,29 @@ public class MapperOperator {
 		}
 	}
 
-	public static void printPairs(List<Pair<String, Integer>> storeWordList) {
+	public void printPairs() {
 
 		System.out.println("-------UNSORTED LIST-----------------");
 		System.out.println("-------------------------------------");
-		storeWordList.stream().forEach(System.out::println);
+		mappedList.stream().forEach(System.out::println);
 		System.out.println("-------------------------------------");
 		System.out.println("-------------------------------------");
 
 	}
-	
-	public static void printSortedPairs(List<Pair<String, Integer>> storeWordList) {
+
+	public void printSortedPairs() {
 
 		System.out.println("---------SORTED LIST-----------------");
 		System.out.println("-------------------------------------");
-		storeWordList.stream().sorted().forEach(System.out::println);
+		mappedList.stream().sorted().forEach(System.out::println);
 		System.out.println("-------------------------------------");
 		System.out.println("-------------------------------------");
 
 	}
 
+	public List<Pair<String, Integer>> getMappedList() {
+		return mappedList;
+	}
+	
+	
 }
