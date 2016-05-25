@@ -14,37 +14,48 @@ public class WordCount {
 	}
 
 	public void shuffleSort() {
-		for (int r =0 ; r< reducers.length; r++){
+		for (int r = 0; r < reducers.length; r++) {
 			reducers[r] = new ReducerFactory();
 		}
-		
+
 		for (int i = 0; i < mappers.length; i++) {
-//			System.out.println("Mapper "+i +" output");
-			
-			mappers[i] = new MapperFactory("mapper"+i+".txt");
+//			System.out.println("Mapper " + i + " output");
+
+			mappers[i] = new MapperFactory("mapper" + i + ".txt");
 			mappers[i].map();
 //			mappers[i].printPairs();
-			
-			for (Pair<String, Integer> m: mappers[i].map()){
+
+			for (Pair<String, Integer> m : mappers[i].getMappedList()) {
 				reducers[getPartition(m.getKey())].addMappedObj(m);
 			}
-		
 		}
-		
-		for (int r =0 ; r< reducers.length; r++){
-			System.out.println("Reducer "+r +" output");
-			reducers[r].mergeMappedList().stream().sorted()
-			.forEach(System.out::println);
+
+			
+		System.out.println("------------------------------------");
+		for (int m = 0; m < reducers.length; m++) {
+			System.out.println("-----Reducer " + m + " mapped output--------");
+			reducers[m].getMappedObjs().stream().sorted().forEach(System.out::println);
+		}
+
+		System.out.println("------------------------------------");
+		for (int r = 0; r < reducers.length; r++) {
+			System.out.println("Reducer " + r + " merged output");
+			reducers[r].mergeMappedList().stream().sorted().forEach(System.out::println);
+		}
+		System.out.println("------------------------------------");
+		for (int red= 0; red < reducers.length; red++) {
+			System.out.println("Reducer " + red + " reduced output");
+			reducers[red].reduceMergedList().stream().sorted().forEach(System.out::println);
 		}
 	}
-	
+
 	public static void main(String[] args) {
 		WordCount w = new WordCount(3, 4);
 		w.shuffleSort();
 	}
-	
-	public int getPartition(String key){
-		
+
+	public int getPartition(String key) {
+
 		return (int) Math.abs(key.hashCode() % reducers.length);
 	}
 }
