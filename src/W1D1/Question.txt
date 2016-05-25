@@ -1,0 +1,51 @@
+Given a text-file input123,
+
+The program will extract each “word” and form a key-value pair where the key is the “word” and value is integer one.  Note that your program should treat Cat and cat as the same word.
+Each pair is inserted into a List.
+Sort the List using “Collections”. This may involve writing a comparator for the pair class.
+Output the List
+Note that tokens such as input123, abc.txt,  a23bc and abc_ptr  are not words. However, key-value is two words.
+As a good programming habit, you want to use generics.
+Example:
+
+INPUT :
+
+--------------------------------------------------------------------------
+
+Write a Java program to accomplish the following tasks.
+
+Given a text-file as input,
+
+-----------------------------------------------------------------------------------
+
+OUTPUT:
+
+(a, 1)
+
+(a, 1)
+
+(accomplish, 1)
+
+(as, 1)
+
+(file, 1)
+
+(following, 1)
+
+(given, 1)
+
+(input, 1)
+
+(java, 1)
+
+(program, 1)
+
+(tasks, 1)
+
+(text, 1)
+
+(the, 1)
+
+(to, 1)
+
+(write, 1)
