@@ -19,6 +19,9 @@ public class MapperFactory {
 
 	}
 
+	public MapperFactory(){
+		
+	}
 	public static void main(String[] args) {
 
 		MapperFactory m = new MapperFactory("testDataForW1D1.txt");
@@ -89,6 +92,10 @@ public class MapperFactory {
 
 	public List<Pair<String, Integer>> getMappedList() {
 		return mappedList;
+	}
+
+	public void setMappedList(List<Pair<String, Integer>> mappedList) {
+		this.mappedList = mappedList;
 	}
 	
 	

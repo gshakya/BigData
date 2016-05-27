@@ -7,7 +7,7 @@ import W1D1.MapperFactory;
 import W1D1.Pair;
 
 public class ReducerFactory {
-	private List<Pair<String, Integer>> mappedObjs;
+	private List<Pair<String, Integer>> mappedList;
 
 	private List<Pair<String, List<Integer>>> mergedList;
 
@@ -27,22 +27,23 @@ public class ReducerFactory {
 	}
 
 	public ReducerFactory() {
-		mappedObjs = new ArrayList<>();
+		mappedList = new ArrayList<>();
 		mergedList = new ArrayList<Pair<String, List<Integer>>>();
 
 	}
 
-	public ReducerFactory(List<Pair<String, Integer>> mappedObjs) {
-		this.mappedObjs = mappedObjs;
+	public ReducerFactory(List<Pair<String, Integer>> mappedList) {
+		this.mappedList = mappedList;
+		mergedList = new ArrayList<Pair<String, List<Integer>>>();
 
 	}
 
 	public void addMappedObj(Pair<String, Integer> p) {
-		mappedObjs.add(p);
+		mappedList.add(p);
 	}
 
-	public List<Pair<String, Integer>> getMappedObjs() {
-		return mappedObjs;
+	public List<Pair<String, Integer>> getMappedList() {
+		return mappedList;
 	}
 
 	public List<Pair<String, Integer>> reduceMergedList() {
@@ -61,8 +62,8 @@ public class ReducerFactory {
 
 	public List<Pair<String, List<Integer>>> mergeMappedList() {
 
-		for (Pair mappedObj : mappedObjs) {
-			Pair mergedobj = getPair((String) mappedObj.getKey(), mergedList);
+		for (Pair mappedObj : mappedList) {
+			Pair mergedobj = getPair((String) mappedObj.getKey());
 			if (mergedobj == null) {
 				mergedobj = new Pair((String) mappedObj.getKey(), new ArrayList<>());
 				mergedList.add(mergedobj);
@@ -73,7 +74,7 @@ public class ReducerFactory {
 		return mergedList;
 	}
 
-	public Pair getPair(String key, List<Pair<String, List<Integer>>> mergedList) {
+	public Pair getPair(String key) {
 		for (Pair p : mergedList) {
 			if (p.getKey().equals(key)) {
 				return p;

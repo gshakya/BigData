@@ -1,0 +1,12 @@
+init:
+	reducer [] = new Association list 
+	
+shuffleSort:
+	for ( mappedList in mapper)
+		for (m in mappedList)
+			r.[getPartition(m.key)] => m.mappedObject
+
+reducer
+	for (i in reducer.length)
+		reducer[i].reduce()
+	emit reducer	
