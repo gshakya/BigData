@@ -1,0 +1,14 @@
+class Mapper
+  method initilization
+  //Declatation of Associative Array (keyValue Pair)
+    H=Associative Array
+  //  pair(int hashMap(u,count))  
+  
+  method map(docid a,doc d)
+    for all item u in doc d do
+      for all term v in Neighbour(w) do
+      H{key,H(w,count)} <- H{key,H(w,count+1)} 
+  method close
+    for all Pair(w,u) in H do
+    Emit(H{key,H(w,sum(count))}
+    //Emit (H{key,H{Pair(w,sum(count))}
