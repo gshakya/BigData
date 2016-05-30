@@ -12,32 +12,70 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DriverClass {
+	CharMapper[] mappers;
+	CharReducer[] reducers;
+
+	public DriverClass(CharMapper[] mappers, int noOfReducers) {
+		this.mappers = mappers;
+		reducers = new CharReducer[noOfReducers];
+		for (int i = 0; i<reducers.length; i++) {
+			reducers[i] = new CharReducer();
+		}
+	}
+
+	public CharReducer[] getReducers() {
+		shuffleSort();
+		return reducers;
+
+	}
+
+	private void shuffleSort() {
+		for (CharMapper c : mappers) {
+			for (Entry<Character, Integer[]> e : c.getCharMap().entrySet()) {
+				reducers[getPartition(e.getKey())].addPairs(e);
+			}
+
+		}
+	}
+
 	public static void main(String[] args) {
-		List<String> str = getStringsForFile("W1D4/File0.txt");
-		CharMapper cMapper = new CharMapper();
-		str.stream().forEach(s -> cMapper.addCharacter(s));
+		CharMapper[] inputMappers = new CharMapper[4];
+
+		for (int i = 0; i < inputMappers.length; i++) {
+			List<String> str = getStringsForFile("W1D4/File" + i + ".txt");
+			inputMappers[i] = new CharMapper();
+
+			for (String s : str) {
+				inputMappers[i].addCharacter(s);
+			}
+		}
+
+		DriverClass d = new DriverClass(inputMappers, 3);
+
+		CharReducer[] reducers = d.getReducers();
 		
+
+		for (int i = 0; i < inputMappers.length; i++) {
+			System.out.println("----------Mapper" + i + "-------");
+			printKeyPair(inputMappers[i].getCharMap());
 		
-		List<String> str1 = getStringsForFile("W1D4/File1.txt");
-		CharMapper cMapper1 = new CharMapper();
-		str1.stream().forEach(s -> cMapper1.addCharacter(s));
-		
-		
-		
-		CharReducer cReducer = new CharReducer();
-		for (Entry<Character, Integer[]> mappedVal : cMapper.getCharMap()
-				.entrySet()) {
-			cReducer.addPairs(mappedVal);
 		}
 		
-		for (Entry<Character, Integer[]> mappedVal : cMapper1.getCharMap()
-				.entrySet()) {
-			cReducer.addPairs(mappedVal);
+
+		for (int i = 0; i < reducers.length; i++) {
+			System.out.println("----------Reducer " + i + "-------");
+			printKeyListPair(reducers[i].getMergedPairs());
+		
+		}
+		for (int i = 0; i < reducers.length; i++) {
+			System.out.println("----------Reducer " + i + " merged-------");
+			printKeyPair(reducers[i].getReducedPairs());
 		}
 		
-		printKeyListPair(cReducer.getMergedPairs());
-		System.out.println("-------------------");
-		printKeyPair(cReducer.getReducedPairs());
+		for (int i = 0; i < reducers.length; i++) {
+			System.out.println("----------Reducer " + i + " Average character count-------");
+			printAverageStringLength(reducers[i].getReducedPairs());
+		}
 		
 	}
 
@@ -65,11 +103,9 @@ public class DriverClass {
 					if (m.find()) {
 						// System.out.println(m.group(0).replace('"',
 						// '\0').trim());
-						mappedList.add(m.group(0).replace('"', '\0').trim()
-								.toLowerCase());
+						mappedList.add(m.group(0).replace('"', '\0').trim().toLowerCase());
 					}
 				}
-
 			}
 			br.close();
 			return mappedList;
@@ -80,26 +116,34 @@ public class DriverClass {
 			return null;
 		}
 	}
+	
+	public static  void printAverageStringLength(Map<Character, Integer[] >reducer)
+	{
+		for (Entry<Character, Integer[] > e: reducer.entrySet()){
+			System.out.println("< "+e.getKey()+" , "+(float)e.getValue()[0]/e.getValue()[1]+" >");
+		}
+	}
 
 	public static void printKeyPair(Map<Character, Integer[]> collections) {
 		for (Map.Entry<Character, Integer[]> coll : collections.entrySet()) {
-			System.out.println("< " + coll.getKey() + " , ["
-					+ coll.getValue()[0] + ", " + coll.getValue()[1] + "] >");
+			System.out.println("< " + coll.getKey() + " , [" + coll.getValue()[0] + ", " + coll.getValue()[1] + "] >");
 
 		}
 	}
 
-	public static void printKeyListPair(
-			Map<Character, List<Integer[]>> collections) {
-		for (Map.Entry<Character, List<Integer[]>> coll : collections
-				.entrySet()) {
+	public static void printKeyListPair(Map<Character, List<Integer[]>> collections) {
+		for (Map.Entry<Character, List<Integer[]>> coll : collections.entrySet()) {
 			String pairList = "";
 			for (Integer[] pair : coll.getValue()) {
 				pairList += " [" + pair[0] + ", " + pair[1] + "] ";
 			}
-			System.out.println("< " + coll.getKey() + " , [" + pairList
-					+ "] >");
+			System.out.println("< " + coll.getKey() + " , [" + pairList + "] >");
 
 		}
+	}
+
+	public int getPartition(Character key) {
+
+		return (int) Math.abs(key.hashCode() % reducers.length);
 	}
 }
