@@ -1,11 +1,15 @@
 package W2D2;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
 public class Reducer<K, V> {
 	private Map<K, ArrayList<V>> elements;
+	private Map<K,LinkedList<keyValuePair<K, V>>> output;;
+	
 
 	public Reducer() {
 		elements = new TreeMap<>();
@@ -25,4 +29,7 @@ public class Reducer<K, V> {
 	public Map<K, ArrayList<V>> getElements() {
 		return elements;
 	}
+	
+	
+	
 }
